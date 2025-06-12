@@ -57,10 +57,10 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 	vb.Create(sizeof(Vector4) * 3, sizeof(Vector4));
 	// 頂点リソースにデータを書き込む ----------
 	VertexData vertices[] = {
-	{{ -1.0f,  1.0f, 0.0f, 1.0f }}, // 左上
-    {{  1.0f,  1.0f, 0.0f, 1.0f }}, // 右上
-    {{ -1.0f, -1.0f, 0.0f, 1.0f }}, // 左下
-    {{  1.0f, -1.0f, 0.0f, 1.0f }}  // 右下
+	{ -1.0f,  1.0f, 0.0f, 1.0f }, // 左上
+    {  1.0f,  1.0f, 0.0f, 1.0f }, // 右上
+    { -1.0f, -1.0f, 0.0f, 1.0f }, // 左下
+    {  1.0f, -1.0f, 0.0f, 1.0f }  // 右下
 	};
 	vb.Create(sizeof(vertices), sizeof(vertices[0]));
 
