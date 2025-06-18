@@ -50,6 +50,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 
 	struct VertexData {
 		Vector4 position;
+		Vector2 texcoord;
 	};
 
 
@@ -57,10 +58,10 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 	vb.Create(sizeof(Vector4) * 3, sizeof(Vector4));
 	// 頂点リソースにデータを書き込む ----------
 	VertexData vertices[] = {
-		{ -1.0f,  1.0f, 0.0f, 1.0f }, // 左上
-		{  1.0f,  1.0f, 0.0f, 1.0f }, // 右上
-		{ -1.0f, -1.0f, 0.0f, 1.0f }, // 左下
-		{  1.0f, -1.0f, 0.0f, 1.0f }  // 右下
+		{ { -1.0f,  1.0f, 0.0f, 1.0f }, { 0.0f, 0.0f } }, // 左上
+		{ {  1.0f,  1.0f, 0.0f, 1.0f }, { 1.0f, 0.0f } }, // 右上
+		{ { -1.0f, -1.0f, 0.0f, 1.0f }, { 0.0f, 1.0f } }, // 左下
+		{ {  1.0f, -1.0f, 0.0f, 1.0f }, { 1.0f, 1.0f } }  // 右下
 	};
 	vb.Create(sizeof(vertices), sizeof(vertices[0]));
 
@@ -107,7 +108,12 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 		dxCommon->PostDraw();
 	}
 	// 解放処理
-
+	vb.~VertexBuffer();
+	ib.~IndexBuffer();
+	vs.~Shader();
+	ps.~Shader();
+	pipelineState.~PipelineState();
+	rs.~RootSignature();
 	// エンジンの終了処理
 	KamataEngine::Finalize();
 
@@ -117,11 +123,17 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 void SetupPipelineState(PipelineState& pipelineState, RootSignature& rs, Shader& vs, Shader& ps)
 {
 	// InputLayout ----------------------------------------
-	D3D12_INPUT_ELEMENT_DESC inputElementDescs[1] = {};
+	D3D12_INPUT_ELEMENT_DESC inputElementDescs[2] = {};
 	inputElementDescs[0].SemanticName = "POSITION";
 	inputElementDescs[0].SemanticIndex = 0;
 	inputElementDescs[0].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
 	inputElementDescs[0].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
+
+	// TEXCOORD
+	inputElementDescs[1].SemanticName = "TEXCOORD";
+	inputElementDescs[1].SemanticIndex = 0;
+	inputElementDescs[1].Format = DXGI_FORMAT_R32G32_FLOAT;
+	inputElementDescs[1].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
 
 	D3D12_INPUT_LAYOUT_DESC inputLayoutDesc{};
 	inputLayoutDesc.pInputElementDescs = inputElementDescs;
