@@ -139,7 +139,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 
 
 	VertexBuffer vb;
-	vb.Create(sizeof(Vector4) * 3, sizeof(Vector4));
 	// 頂点リソースにデータを書き込む ----------
 	VertexData vertices[] = {
 		{ { -1.0f,  1.0f, 0.0f, 1.0f }, { 0.0f, 0.0f } }, // 左上
@@ -247,12 +246,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 		dxCommon->PostDraw();
 	}
 	// 解放処理
-	vb.~VertexBuffer();
-	ib.~IndexBuffer();
-	vs.~Shader();
-	ps.~Shader();
-	pipelineState.~PipelineState();
-	rs.~RootSignature();
 	renderTextureResource->Release();
 	srvDescriptorHeap->Release();
 	rtvDescriptorHeap->Release();
